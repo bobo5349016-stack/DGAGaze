@@ -12,10 +12,10 @@ We use [6DRepNet](https://github.com/thohemp/6DRepNet) to generate head-pose pse
 Training and Evaluation:
 
 ##To run training and evaluation, use:
-```bash
+
 python trainer/train.py -s config/train/config_xx.yaml -t config/test/config_xx.yaml
 
 ##To test your trained model, use:
-```bash
+
 python tester/test.py -s config/train/config_xx.yaml -t config/test/config_xx.yaml
 
