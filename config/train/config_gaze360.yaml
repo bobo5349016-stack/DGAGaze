@@ -1,0 +1,39 @@
+---
+train:
+
+    params:
+        batch_size: 256
+        epoch: 60
+        lr: 0.0005
+        decay: 0.1
+        decay_step: 20
+        warmup: 5
+        sequence_length: 2  
+        stride: 1          
+
+    save:
+        metapath: "/userhome/share_hosts/work"
+        folder: gaze360
+        model_name: dgagaze
+        step: 10
+
+    data:
+        image: "/userdata/360.zip/Gaze360/Image"
+        label: "/userdata/360.zip/Gaze360/Label/train.label"
+        pose_label: /path/to/pose_pseudo_labels.csv
+        header: True
+        name: gaze360
+        isFolder: False
+        
+    pretrain:
+        enable: True
+        path: "/userhome/share_hosts/work/eth//GazeTR-H-ETH.pt"
+        device: 0
+
+
+
+    device: 0
+
+    reader: reader
+     
+

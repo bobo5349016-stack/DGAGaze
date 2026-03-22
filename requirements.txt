@@ -1,0 +1,16 @@
+Python 3.8
+PyTorch 2.4
+CUDA 11.8
+torchvision 0.19.1
+numpy 1.24.3
+opencv-python 4.10.0.84
+opencv-contrib-python    4.13.0.92
+PyYAML 6.0.2
+easydict 1.13
+tqdm 4.67.1
+natsort 8.4.0
+warmup-scheduler 0.3
+sixdrepnet 0.1.6
+
+
+
