@@ -16,20 +16,20 @@ class Model(nn.Module):
 
         maps = 32
 
-        # 3.2 Feature extraction backbone
+       
         self.base_model = resnet18(pretrained=False, maps=maps)
 
-        # 3.3 Geometry-aware temporal alignment
+       
         self.geo_align = GeometryAwareAlignment(
             in_channels=maps,
             pose_hidden=64,
             affine_hidden=32
         )
 
-        # 3.4 DSDA
+        
         self.sam = DSDA(input_dim=maps, dim=512)
 
-        # 3.5 Regression head
+       
         gru_config = edict({
             "camera_frame_type": "face",
             "face_net_rnn_num_features": 96,  # 3 * 32
@@ -41,7 +41,7 @@ class Model(nn.Module):
         self.gaze_loss_op = nn.L1Loss()
         self.pose_loss_op = nn.L1Loss()
 
-        # paper setting
+       
         self.lambda_pose = 0.1
 
         self.to(device)
@@ -54,7 +54,7 @@ class Model(nn.Module):
         if t < 2:
             raise ValueError(f"DGAGaze requires at least 2 frames, but got t={t}")
 
-        # shared backbone features
+       
         x_t_features = []
         for i in range(t):
             frame = x_t[:, i, :, :, :]
@@ -67,15 +67,15 @@ class Model(nn.Module):
         pose_prev_preds = []
         pose_curr_preds = []
 
-        # process consecutive pair(s)
+       
         for i in range(1, t):
             feat_prev = x_t_features[:, i - 1, :, :, :]  # [B, 32, 7, 7]
             feat_curr = x_t_features[:, i, :, :, :]      # [B, 32, 7, 7]
 
-            # geometry-aware alignment
+            
             feat_prev_aligned, pose_prev, pose_curr, theta = self.geo_align(feat_prev, feat_curr)
 
-            # DSDA input must be aligned previous-frame feature + current-frame feature
+        # DSDA input must be aligned previous-frame feature + current-frame feature
             sam_output = self.sam(
                 feat_prev_aligned.unsqueeze(1),   # [B, 1, 32, 7, 7]
                 feat_curr.unsqueeze(1)            # [B, 1, 32, 7, 7]
@@ -112,7 +112,7 @@ class Model(nn.Module):
         pose_prev_pred = aux["pose_prev_pred"]
         pose_curr_pred = aux["pose_curr_pred"]
 
-        # main task
+       
         gaze_loss = self.gaze_loss_op(gaze_pred, gaze_label)
 
         # auxiliary pose supervision using pseudo-labels
